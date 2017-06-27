@@ -6,6 +6,7 @@ import ReducerCreator from './4-ReducerCreator';
 import Store from './5-Store';
 import TestProvider from './6-ReactRedux';
 import Middleware from './7-ReduxMiddleware';
+import ReactThunk from './8-ReduxThunk';
 
 
 export default class App extends Component{
