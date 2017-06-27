@@ -5,13 +5,14 @@ import Reducer from './3-Reducer';
 import ReducerCreator from './4-ReducerCreator';
 import Store from './5-Store';
 import TestProvider from './6-ReactRedux';
+import Middleware from './7-ReduxMiddleware';
 
 
 export default class App extends Component{
 
     render(){
         return (
-            <TestProvider/>
+            <Middleware/>
         )
     }
 }
