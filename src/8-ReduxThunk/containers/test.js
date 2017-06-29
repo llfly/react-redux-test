@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import action from '../actions';
 import NumberComponent from '../components/Number';
 import AlertComponent from '../components/Alert';
+import FetchDataComponent from '../components/FetchData';
 
 class Test extends Component {
 
@@ -22,10 +23,16 @@ class Test extends Component {
         this.props.toggleAlert();
     };
 
+    handleClickGetData = () => {
+        this.props.fetchDataAction();
+    }
+
     render() {
         const {
             number,
             showAlert,
+            data,
+            fetching
             } = this.props;
 
         return (
@@ -41,6 +48,11 @@ class Test extends Component {
                     showAlert={showAlert}
                     handleClickAlert={this.handleClickAlert}
                 />
+                <FetchDataComponent
+                    showloading={fetching}
+                    handleClickGetData={this.handleClickGetData}
+                />
+                <p>{ data != null ? data : '' }</p>
             </div>
         );
     }
@@ -51,6 +63,8 @@ const mapStateToProps = (state) => {
     return {
         number: state.changeNumber.number,
         showAlert: state.toggleAlert.showAlert,
+        data:state.fetchData.data,
+        fetching:state.fetchData.fetching
     };
 };
 
@@ -60,6 +74,7 @@ const mapDispatchToProps = {
     decrementNum: action.number.decrementNum,
     clearNum: action.number.clearNum,
     toggleAlert: action.alert.toggleAlert,
+    fetchDataAction:action.fetchData.fetchDataAction
 };
 
 

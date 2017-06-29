@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import changeNumber from './number';
 import toggleAlert from './alert';
+import fetchData from './fetchData'; 
 
 
 // Reducer既然是用于根据业务逻辑更新state，那如何切分业务是个问题。
@@ -15,4 +16,5 @@ import toggleAlert from './alert';
 export default combineReducers({
     changeNumber,
     toggleAlert,
+    fetchData
 });

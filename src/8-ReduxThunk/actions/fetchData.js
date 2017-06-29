@@ -36,8 +36,6 @@ export default {
     },
 };
 
-
-
 // requestData是个常规的发送 request 请求的Action creator，供第一步用
 // receiveData是个常规的携带数据的 Action creator，供第二步用
 // 重点在如何将第一步和第二步打包进fetchDataAction里

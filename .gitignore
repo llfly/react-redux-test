@@ -51,3 +51,4 @@ react-201703.iml
 *.DS_Store
 node_modules/*
 bak/
+.vscode
