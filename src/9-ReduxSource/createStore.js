@@ -297,6 +297,7 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * For more information, see the observable proposal:
    * https://github.com/tc39/proposal-observable
    */
+  // observable 是为了配合 Rxjs 这样 observable/reactive 库，不久的将来 EMCAScript 可能会支持原生的 observable/reactive 对象。
   function observable() {
     //订阅方法赋值给变量 outerSubscribe
     const outerSubscribe = subscribe
