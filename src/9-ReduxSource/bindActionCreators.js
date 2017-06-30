@@ -24,6 +24,7 @@ function bindActionCreator(actionCreator, dispatch) {
  * function.
  */
 export default function bindActionCreators(actionCreators, dispatch) {
+  // 包装一层dispatch，返回高阶函数，因为原来的 actionCreator 是可以传递参数的函数，包装后不能破坏原结构
   if (typeof actionCreators === 'function') {
     return bindActionCreator(actionCreators, dispatch)
   }
@@ -41,6 +42,8 @@ export default function bindActionCreators(actionCreators, dispatch) {
     const key = keys[i]
     const actionCreator = actionCreators[key]
     if (typeof actionCreator === 'function') {
+      // 包装函数：在原函数上增加dispatch包装。
+      // 我们直接把经过dispatch包装过函数传递给子组件，而不是让子组件拿到传递过去dispatch再去执行，这样子组件只通过传递过去的函数调用即可，完全不知道有redux的存在
       boundActionCreators[key] = bindActionCreator(actionCreator, dispatch)
     }
   }

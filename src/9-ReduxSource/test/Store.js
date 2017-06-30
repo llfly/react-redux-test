@@ -1,4 +1,6 @@
-const Store = require('redux');
+
+import {createStore} from 'redux';
+
 
 // console.log(Store);
 
@@ -27,7 +29,7 @@ const reducer = (state, action) => {
     }
 };
 
-const store = Store.createStore(reducer);
+const store = createStore(reducer);
 
 // console.log(store);
 // { dispatch: [Function: dispatch],

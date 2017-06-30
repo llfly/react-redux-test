@@ -9,6 +9,14 @@
  * (...args) => f(g(h(...args))).
  */
 
+/**
+ * compose(f, g, h)(...arg) => f(g(h(...args)))
+ *
+ * 执行顺序是从右到左
+ *
+ * @param  {多个函数，用逗号隔开}
+ * @return {函数}
+ */
 export default function compose(...funcs) {
   if (funcs.length === 0) {
     return arg => arg

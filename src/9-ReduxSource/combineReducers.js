@@ -99,6 +99,19 @@ function assertReducerShape(reducers) {
  * @returns {Function} A reducer function that invokes every reducer inside the
  * passed object, and builds a state object with the same shape.
  */
+
+  // Flux 中是根据不同的功能拆分出多个 store 分而治之
+  // 而 Redux 只允许应用中有唯一的 store，通过拆分出多个 reducer 分别管理对应的 state
+  // 这个函数的作用有两个作用：
+  // 1. 把多个 reducers 合并成一个，即做到reducer解构
+  // 2. 按照解构的名称，把不同的数据分发到不同的 state 键下, 每一块独立负责管理 state 的一部分。
+
+  /**
+   * 随着应用变得复杂，需要对 reducer 函数 进行拆分，combineReducers 辅助函数的作用是，把一个由多个不同 reducer 函数作为 value 的 object，合并
+   * 成一个最终的 reducer 函数，然后就可以对这个 reducer 调用 createStore。
+   * 合并后的 reducer 可以调用各个子 reducer，并把它们的结果合并成一个 state 对象。state 对象的结构由传入的多个 reducer 的 key 决定 
+   */
+
 export default function combineReducers(reducers) {
   const reducerKeys = Object.keys(reducers)
   const finalReducers = {}
@@ -129,6 +142,7 @@ export default function combineReducers(reducers) {
     shapeAssertionError = e
   }
 
+  // 返回合成后的 reducer
   return function combination(state = {}, action) {
     if (shapeAssertionError) {
       throw shapeAssertionError
@@ -146,13 +160,13 @@ export default function combineReducers(reducers) {
     for (let i = 0; i < finalReducerKeys.length; i++) {
       const key = finalReducerKeys[i]
       const reducer = finalReducers[key]
-      const previousStateForKey = state[key]
-      const nextStateForKey = reducer(previousStateForKey, action)
+      const previousStateForKey = state[key]                                // 获取当前子 state
+      const nextStateForKey = reducer(previousStateForKey, action)          // 执行各子 reducer 中获取子 nextState
       if (typeof nextStateForKey === 'undefined') {
         const errorMessage = getUndefinedStateErrorMessage(key, action)
         throw new Error(errorMessage)
       }
-      nextState[key] = nextStateForKey
+      nextState[key] = nextStateForKey                                      // 将子 nextState 挂载到对应的键名
       hasChanged = hasChanged || nextStateForKey !== previousStateForKey
     }
     return hasChanged ? nextState : state

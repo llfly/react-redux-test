@@ -203,8 +203,15 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * Note that, if you use a custom middleware, it may wrap `dispatch()` to
    * return something else (for example, a Promise you can await).
    */
+
+
    /**
-   * dispath action。这是触发 state 变化的惟一途径。
+   * dispath 一个 action，这是触发 state 变化的惟一途径。
+   * 内部的实现是：往 reducer 中传入 currentState 以及 action
+   * 用其返回值替换 currentState，最后逐个触发回调函数
+   * 
+   * 如果 dispatch 的不是一个对象类型的 action（同步的），而是 Promise / thunk（异步的）
+   * 则需引入 redux-thunk 等中间件来反转控制权
    * 
    * @param {Object} 一个普通(plain)的对象，对象当中必须有 type 属性
    *
@@ -213,6 +220,17 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * 注意: 如果你要用自定义的中间件， 它可能包装 `dispatch()`
    *       返回一些其它东西，如( Promise )
    */
+
+  /**
+   * 什么是反转控制权？
+   * 在同步场景下，dispatch(action) 的这个 action 中的数据是同步获取的，并没有控制权的切换问题
+   * 但异步场景下，则需要将 dispatch 传入到回调函数。待异步操作完成后，回调函数自行调用 dispatch(action)
+   * 
+   * 即 在异步 Action Creator 中自行调用 dispatch 就相当于反转控制权
+   * 完全可以自己实现，也可以借助 redux-thunk / redux-promise 等中间件统一实现
+   * （它们的作用也仅仅就是把 dispatch 等传入异步 Action Creator 罢了）
+   */
+
   function dispatch(action) {
     //判断 action 不是普通对象。也就是说该对象由 Object 构造函数创建
     if (!isPlainObject(action)) {
